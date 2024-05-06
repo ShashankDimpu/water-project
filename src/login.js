@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './login.css';
-import Landing from './landing'; // Import the Landing component
+import Landing from './landing'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 const Login = () => {
@@ -9,6 +9,7 @@ const Login = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [consumptionData, setConsumptionData] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +25,8 @@ const Login = () => {
 
       const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (response.ok && data.Auth) {
+        setConsumptionData(data.consumption_data);
         setLoggedIn(true); // Update state to indicate user is logged in
       } else {
         // Login failed, show error message
@@ -51,7 +53,7 @@ const Login = () => {
   return (
     <div className="login-container1">
       {loggedIn ? (
-        <Landing />
+        <Landing consumptionData={consumptionData} /> 
       ) : (
         <div className="login-container">
           {error && <div className="error-message">{error}</div>}
